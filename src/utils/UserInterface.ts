@@ -4,7 +4,8 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  fav?: (string | undefined)[] | undefined// Added fav field as a string array
+  fav?: (string | undefined)[] | undefined;
+comments?:{Title:string,comment:string}[];
 }
 
 
@@ -26,13 +27,16 @@ export interface Movie {
   Poster: string;
   Response: string;
 }
-
+export interface Comments {
+  Title: string;
+  comment: string;
+  name?: string;
+}
 export interface UserState {
   isSearch: boolean;
   loading: boolean;
   Movie: Movie[];
   currentUser: User | null;
-  Comments: {
-      comments: { username: string; comment: string }[];
-  };
+  Comments?:  Comments[]|[];
+
 }

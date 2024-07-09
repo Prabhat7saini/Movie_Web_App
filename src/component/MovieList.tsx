@@ -10,10 +10,10 @@ import { styled, Theme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFavMov, removeFavMov } from '../redux/slices/userSlice';
 import { useNavigate } from "react-router-dom";
-import { UserState } from '../utils/UserInterface'; 
+import { UserState } from '../utils/UserInterface';
 // import MovieDetailCard from '../pages/MovieDetailCard';
 
-const StyledCard = styled(Card)(({  }: { theme: Theme }) => ({
+const StyledCard = styled(Card)(({ }: { theme: Theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%', // Adjusted to make card fill its container
@@ -24,12 +24,12 @@ const StyledCardMedia = styled(CardMedia)({
     height: 300,
     objectFit: 'cover',
 });
-interface MovieProps{
-    Title:string,
-    Poster:string;
-    Ratings:string;
-    Plot:string;
-    Year:string
+interface MovieProps {
+    Title: string,
+    Poster: string;
+    Ratings: string;
+    Plot: string;
+    Year: string
 
 }
 const MovieCard: React.FC<MovieProps> = ({ Title, Poster, Ratings, Plot, Year }) => {
@@ -57,13 +57,15 @@ const MovieCard: React.FC<MovieProps> = ({ Title, Poster, Ratings, Plot, Year })
 
         // Toggle isFavorite state and dispatch appropriate action
         if (!isFavorite) {
-            dispatch(addFavMov(Title)); 
+            dispatch(addFavMov(Title));
         } else {
-            dispatch(removeFavMov(Title));         }
-        setIsFavorite((prev) => !prev);     };
-const handleshowMovieDetailCard=()=>{
-   navigate(`/MovieDetils/${Title}`)
-}
+            dispatch(removeFavMov(Title));
+        }
+        setIsFavorite((prev) => !prev);
+    };
+    const handleshowMovieDetailCard = () => {
+        navigate(`/MovieDetils/${Title}`)
+    }
     return (
         <StyledCard >
             <StyledCardMedia
@@ -71,9 +73,10 @@ const handleshowMovieDetailCard=()=>{
                 title={Title}
             />
             <CardContent>
-                <Typography variant="h6" component="h2" gutterBottom  onClick={handleshowMovieDetailCard}>
+                <Typography variant="h6" component="h2" gutterBottom onClick={handleshowMovieDetailCard} style={{ cursor: 'pointer' }}>
                     {Title}
                 </Typography>
+
                 <Typography variant="body2" color="textSecondary" component="p">
                     {Plot?.length > 150 ? `${Plot.substring(0, 150)}...` : Plot}
                 </Typography>

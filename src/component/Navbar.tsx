@@ -19,6 +19,8 @@ const Navbar = () => {
     const { control, handleSubmit } = useForm<FormValues>(); 
     const dispatch = useDispatch();
     const currentUser = useSelector((state: UserState) => state.currentUser); 
+    const Comments=useSelector((state:UserState)=>state.Comments);
+    console.log(`comments from slice ${Comments?.[0]?.comment}`)
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for drawer
 

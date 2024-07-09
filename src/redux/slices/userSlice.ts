@@ -1,13 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserState, User, Movie } from "../../utils/UserInterface";
+import { UserState, User, Movie, Comments } from "../../utils/UserInterface";
 import localforage from "localforage";
+// import { useEffect } from "react";
 
 // Function to fetch current user from localStorage
 const fetchCurrentUser = (): User | null => {
     const storedUser = localStorage.getItem('currentUser');
     return storedUser ? JSON.parse(storedUser) as User : null;
 };
+const fetchComments = async (): Promise<Comments[] | []> => {
+    try {
+      const savedComments = await localforage.getItem<Comments[]>("comment");
+      return savedComments || []; // Return saved comments or empty array if null or undefined
+    } catch (error) {
+      console.error('Error fetching comments from localforage:', error);
+      return []; // Return empty array on error
+    }
+  };
 
+// console.log(`useeffect`,dbcommentdata)
 const setMovieInlocalforage = async (email: string, password: string, fav: (string | undefined)[], name: string, username: string) => {
     const savedUsers = (await localforage.getItem<User[]>('User')) || [];
     const existingUserIndex = savedUsers.findIndex((user) => user.email === email);
@@ -34,9 +45,8 @@ const initialState: UserState = {
     Movie: [],
     currentUser: fetchCurrentUser(), // Initialize currentUser from localStorage
     isSearch: false,
-    Comments: {
-        comments: []
-    }
+    Comments:await fetchComments(),
+   
 };
 
 const userSlice = createSlice({
@@ -91,17 +101,7 @@ const userSlice = createSlice({
         setIsSearch(state, action: PayloadAction<boolean>) {
             state.isSearch = action.payload
         },
-        addComment(state, action: PayloadAction<{ username: string; comment: string }>) {
-            const newComment = {
-                username: action.payload.username,
-                comment: action.payload.comment
-            };
-
-            state.Comments.comments.push(newComment);
-
-            // Update local storage with comments array
-            localforage.setItem('comments', state.Comments.comments);
-        }
+       
     },
 });
 
@@ -114,7 +114,7 @@ export const {
     removeFavMov,
     logoutCurrentUser,
     setIsSearch,
-    addComment
+  
 } = userSlice.actions;
 
 export default userSlice.reducer;

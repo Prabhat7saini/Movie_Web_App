@@ -1,7 +1,7 @@
 // useAuth.ts
 
 import localforage from 'localforage';
-import { User } from '../utils/UserInterface';
+import { Comments, User } from '../utils/UserInterface';
 
 
 export const Register = async (newUser: User) => {
@@ -25,3 +25,14 @@ export const Register = async (newUser: User) => {
 };
 
 export default {  Register }; // Exporting an object with named exports
+
+
+export const  addComment=async(newcomment:Comments)=>{
+    try{
+         const savedComment=(await localforage.getItem<Comments[]>("comment"))||[];
+         const updateComment=[...savedComment,newcomment];
+         await localforage.setItem("comment",updateComment);
+    }catch(error){
+         throw new Error(`while create error${error}`);
+    }
+}

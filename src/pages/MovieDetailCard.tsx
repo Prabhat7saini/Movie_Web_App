@@ -1,34 +1,54 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, Grid, Chip, Avatar, TextField, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { Movie, UserState } from '../utils/UserInterface';
-import { addComment } from '../redux/slices/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { Comments, Movie, UserState } from '../utils/UserInterface';
+import {  useSelector } from 'react-redux';
 import data from '../../data.json';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { addComment } from '../hooks/useAuth';
+
+interface CommentFormInput {
+    comment: string;
+}
 
 const MovieDetailCard: React.FC = () => {
     const currentUser = useSelector((state: UserState) => state.currentUser);
-    const comments = useSelector((state: UserState) => state.Comments.comments);
     const { Title } = useParams<{ Title: string }>();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [comment, setComment] = useState<string>('');
+
+    const { register, handleSubmit, reset } = useForm<CommentFormInput>();
 
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setComment(event.target.value);
     };
+    const Comments=useSelector((state:UserState)=>state.Comments);
+    const commentArray=Comments?.filter((comment:Comments)=>comment.Title===Title);
+    console.log(commentArray,"commentarray")
 
-    const handleCommentSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (comment.trim() !== '') {
-            const newComment = {
-                username: currentUser?.name || '', // Ensure username is available or provide a default
-                comment: comment,
+    const handleCommentSubmit: SubmitHandler<CommentFormInput> = async (formData) => {
+        console.log(formData.comment); // Logging form data
+        reset();
+    
+        try {
+            if (!Title) {
+                console.error('Movie Title is undefined');
+                return;
+            }
+    
+            const newcomment = {
+                Title: Title,
+                comment: formData.comment,
+                name: currentUser?.name
             };
-            dispatch(addComment(newComment));
-            setComment('');
+    
+            await addComment(newcomment);
+        } catch (error) {
+            console.error('Error while adding comment:', error);
+            // Handle error as needed (e.g., show error message to user)
         }
     };
-
     // Fetch movie details from data.json based on Title parameter
     const movie: Movie | undefined = data.find((dataItem: Movie) => dataItem.Title === Title);
 
@@ -106,20 +126,12 @@ const MovieDetailCard: React.FC = () => {
                         <Typography variant="h6" gutterBottom style={{ marginTop: '1rem' }}>
                             Comments:
                         </Typography>
-                        {comments.length === 0 && (
-                            <Typography variant="body1" component="p" gutterBottom>
-                                No comments yet.
-                            </Typography>
-                        )}
-                        {comments.map((comment, index) => (
-                            <Typography key={index} variant="body1" component="p" gutterBottom>
-                                <strong>{comment.username}</strong>: {comment.comment}
-                            </Typography>
-                        ))}
+                        
 
                         {/* Form for Adding Comments */}
-                        <form onSubmit={handleCommentSubmit} style={{ marginTop: '1rem' }}>
+                        <form onSubmit={handleSubmit(handleCommentSubmit)} style={{ marginTop: '1rem' }}>
                             <TextField
+                                {...register('comment', { required: true })}
                                 label="Add a comment"
                                 variant="outlined"
                                 fullWidth
@@ -135,6 +147,14 @@ const MovieDetailCard: React.FC = () => {
                                 Submit Comment
                             </Button>
                         </form>
+                        {/* Display existing comments */}
+                        {commentArray && commentArray.map((comment, index) => (
+                            <div key={index}>
+                                <Typography variant="body1" gutterBottom>
+                                    <strong>{comment.name}:</strong> {comment.comment}
+                                </Typography>
+                            </div>
+                        ))}
                     </Grid>
                 </Grid>
             </CardContent>
@@ -143,3 +163,4 @@ const MovieDetailCard: React.FC = () => {
 };
 
 export default MovieDetailCard;
+
