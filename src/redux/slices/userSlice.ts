@@ -53,7 +53,7 @@ const userSlice = createSlice({
                 };
 
                 localStorage.setItem('currentUser', JSON.stringify(state.currentUser));
-                setMovieInlocalforage(state.currentUser.email, state.currentUser.password, updatedFav, state.currentUser.name, state.currentUser.username);
+                setMovieInlocalforage(state.currentUser.email, state.currentUser.password, updatedFav, state.currentUser?.name, state.currentUser.username);
             }
         },
         setLoadingTrue(state, action: PayloadAction<boolean>) {

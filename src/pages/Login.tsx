@@ -22,28 +22,28 @@ const Login = () => {
       fav: []
     },
   });
-  // const navigate=useNavigate();
+
   const currentUser = useSelector((state: UserState) => state.currentUser);
   if (currentUser) {
-    console.log(`user not return`)
+    console.log(`User already logged in`)
     navigate('/favmovie');
-    return;
+    return null;
   }
 
   const onSubmit: SubmitHandler<User> = async (data) => {
-    // console.log('login', data);
     try {
-    dispatch ( setLoadingTrue(true));
+      dispatch(setLoadingTrue(true));
       const savedUsers = (await localforage.getItem<User[]>('User')) || [];
       const existingUser = savedUsers.find((user) => user.email === data.email);
 
       if (existingUser) {
+        console.log(existingUser, 'in login')
         localStorage.setItem('currentUser', JSON.stringify(existingUser));
         dispatch(setCurrentUser(existingUser));
         navigate('/'); // Navigate on successful login
       } else {
         console.log('User not found');
-        throw new Error(`User not found `)
+        throw new Error('User not found')
       }
       dispatch(setLoadingFalse(false));
     } catch (error) {
@@ -116,6 +116,22 @@ const Login = () => {
                   fullWidth
                   error={!!errors.password}
                   helperText={errors.password ? errors.password.message : ''}
+                />
+              )}
+            />
+            <Controller
+              name="name"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  label="Name"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.name}
+                  helperText={errors.name ? errors.name.message : ''}
                 />
               )}
             />
