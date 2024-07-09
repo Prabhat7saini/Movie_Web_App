@@ -65,13 +65,13 @@ const handleshowMovieDetailCard=()=>{
    navigate(`/MovieDetils/${Title}`)
 }
     return (
-        <StyledCard onClick={handleshowMovieDetailCard}>
+        <StyledCard >
             <StyledCardMedia
                 image={Poster}
                 title={Title}
             />
             <CardContent>
-                <Typography variant="h6" component="h2" gutterBottom>
+                <Typography variant="h6" component="h2" gutterBottom  onClick={handleshowMovieDetailCard}>
                     {Title}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
