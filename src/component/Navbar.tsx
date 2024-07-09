@@ -1,9 +1,9 @@
-import  { useState } from 'react';
-import {  AppBar,Box,Button,TextField,InputAdornment,Grid,IconButton,Drawer,List,ListItem,ListItemText,useMediaQuery,useTheme} from '@mui/material';
+import React, { useState } from 'react';
+import { AppBar, Box, Button, TextField, InputAdornment, Grid, IconButton, Drawer, List, ListItem, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
-import {  NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Movie, UserState } from '../utils/UserInterface';
 import { setMovie, logoutCurrentUser, setIsSearch } from "../redux/slices/userSlice"; // Import actions from userSlice
@@ -15,15 +15,15 @@ interface FormValues {
 }
 
 const Navbar = () => {
-    const navigate=useNavigate();
-    const { control, handleSubmit } = useForm<FormValues>(); // Removed resolver option
+    const navigate = useNavigate();
+    const { control, handleSubmit } = useForm<FormValues>(); 
     const dispatch = useDispatch();
-    const currentUser = useSelector((state: UserState) => state.currentUser); // Access currentUser from Redux state
+    const currentUser = useSelector((state: UserState) => state.currentUser); 
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for drawer
 
     const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('md')); // Use 'md' for iPad Air size
 
     function searchMovies(query: string): Movie[] {
         if (!query) return []; // Return an empty array if query is falsy
@@ -50,17 +50,17 @@ const Navbar = () => {
         const result = searchMovies(searchTerm);
         console.log(result);
 
-        dispatch(setMovie(result)); // Dispatch setMovie action with search result
+        dispatch(setMovie(result));
     };
 
     const handleLogout = () => {
         if (currentUser) {
             localStorage.removeItem('currentUser');
-            dispatch(logoutCurrentUser(null)); // Dispatch logoutCurrentUser action
+            dispatch(logoutCurrentUser(null)); 
             navigate(`/`);
         } else {
-            window.location.href = 'http://localhost:5173/Login';
-
+            // window.location.href = 'http://localhost:5173/Login';
+            navigate(`/login`)
         }
     };
 
@@ -71,7 +71,7 @@ const Navbar = () => {
     return (
         <AppBar position="static" color="primary">
             <Grid container justifyContent="space-between" alignItems="center" padding="1rem">
-                {/* Logo and Hamburger Icon */}
+                {/* Hamburger Icon */}
                 <Grid item xs={6} sm={3}>
                     <Box display="flex" alignItems="center">
                         <IconButton
@@ -79,7 +79,7 @@ const Navbar = () => {
                             edge="start"
                             color="inherit"
                             aria-label="menu"
-                            sx={{ mr: 2, display: { sm: 'none' } }} // Hide on larger screens
+                            sx={{ mr: 2, display: { md: 'none' } }} // Hide on larger screens
                         >
                             <MenuIcon />
                         </IconButton>
@@ -107,9 +107,7 @@ const Navbar = () => {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    {/* <Button type="submit" sx={{ color: 'white' }}> */}
-                                                        <SearchOutlinedIcon />
-                                                    {/* </Button> */}
+                                                    <SearchOutlinedIcon />
                                                 </InputAdornment>
                                             ),
                                             sx: {
