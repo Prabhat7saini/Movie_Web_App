@@ -64,7 +64,8 @@ const MovieCard: React.FC<MovieProps> = ({ Title, Poster, Ratings, Plot, Year })
         setIsFavorite((prev) => !prev);
     };
     const handleshowMovieDetailCard = () => {
-        navigate(`/MovieDetils/${Title}`)
+        // navigate(`/MovieDetils/$encodeURIComponent({Title})`)
+        navigate(`/MovieDetails/${encodeURIComponent(`${Title}`)}`)
     }
     return (
         <StyledCard >

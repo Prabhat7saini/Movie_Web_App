@@ -15,7 +15,10 @@ const FavMovieList = () => {
                     }
                  })
             }
-            console.log(ansarry,"check\n")
+           
+            if(ansarry.length===0){
+               return(<h1 style={{margin:'10rem'}}>You Don't Have Any Fav Movie</h1>)
+            }
              
     return (
         <Grid container spacing={2} sx={{marginTop:'5px'}}>

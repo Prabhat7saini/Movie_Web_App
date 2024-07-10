@@ -25,8 +25,8 @@ export const LoginSchema = yup.object({
     .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
     .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
-  name: yup.string()
-    .required('Name is required')
-    .matches(/^[A-Za-z\s]+$/, 'Name can only contain alphabetic characters and spaces'),
+  // name: yup.string()
+  //   .required('Name is required')
+  //   .matches(/^[A-Za-z\s]+$/, 'Name can only contain alphabetic characters and spaces'),
   fav: yup.array().of(yup.string()),
 });

@@ -8,18 +8,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoadingFalse, setLoadingTrue, setCurrentUser } from '../redux/slices/userSlice'; // Ensure correct import of actions
 import localforage from 'localforage';
 import { User, UserState } from '../utils/UserInterface';
-
+interface LoginSchema{
+  email:string,
+  username:string,
+  password:string
+}
 const Login = () => {
   const dispatch = useDispatch(); // Use useDispatch at the top level of the component
   const navigate = useNavigate();
-  const { control, handleSubmit, formState: { errors } } = useForm<User>({
+  const { control, handleSubmit, formState: { errors } } = useForm<LoginSchema>({
     resolver: yupResolver(LoginSchema),
     defaultValues: {
       username: '',
       email: '',
       password: '',
-      name: '',
-      fav: []
+      
     },
   });
 
@@ -30,14 +33,14 @@ const Login = () => {
     return null;
   }
 
-  const onSubmit: SubmitHandler<User> = async (data) => {
+  const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     try {
       dispatch(setLoadingTrue(true));
       const savedUsers = (await localforage.getItem<User[]>('User')) || [];
       const existingUser = savedUsers.find((user) => user.email === data.email);
 
       if (existingUser) {
-        console.log(existingUser, 'in login')
+        // console.log(existingUser, 'in login')
         localStorage.setItem('currentUser', JSON.stringify(existingUser));
         dispatch(setCurrentUser(existingUser));
         navigate('/'); // Navigate on successful login
@@ -119,22 +122,8 @@ const Login = () => {
                 />
               )}
             />
-            <Controller
-              name="name"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  label="Name"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.name}
-                  helperText={errors.name ? errors.name.message : ''}
-                />
-              )}
-            />
+            
+          
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Login
             </Button>

@@ -9,7 +9,7 @@ import { Movie, UserState } from '../utils/UserInterface';
 import { setMovie, logoutCurrentUser, setIsSearch } from "../redux/slices/userSlice"; // Import actions from userSlice
 import wholedata from '../../data.json';
 
-// Define type for form data
+
 interface FormValues {
     searchTerm: string;
 }
@@ -19,8 +19,7 @@ const Navbar = () => {
     const { control, handleSubmit } = useForm<FormValues>(); 
     const dispatch = useDispatch();
     const currentUser = useSelector((state: UserState) => state.currentUser); 
-    const Comments=useSelector((state:UserState)=>state.Comments);
-    console.log(`comments from slice ${Comments?.[0]?.comment}`)
+    //
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for drawer
 

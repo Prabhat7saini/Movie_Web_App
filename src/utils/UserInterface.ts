@@ -30,6 +30,7 @@ export interface Movie {
 export interface Comments {
   Title: string;
   comment: string;
+  rating:string
   name?: string;
 }
 export interface UserState {
@@ -37,6 +38,6 @@ export interface UserState {
   loading: boolean;
   Movie: Movie[];
   currentUser: User | null;
-  Comments?:  Comments[]|[];
+  // Comments?:  Comments[]|[];
 
 }

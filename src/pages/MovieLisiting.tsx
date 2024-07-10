@@ -8,8 +8,8 @@ import { UserState } from '../utils/UserInterface';
 import { Box, Typography } from '@mui/material';
 
 const MovieListing: React.FC = () => {
-  const Movie = useSelector((state: UserState) => state.Movie);
-  const isSearch=useSelector((state:UserState)=>state.isSearch) 
+  const Movie =    useSelector((state: UserState) => state.Movie);
+  const isSearch=  useSelector((state:UserState)=>state.isSearch) 
   // console.log(Movie, "inside selector");
 
   if(isSearch===true && Movie.length===0){
