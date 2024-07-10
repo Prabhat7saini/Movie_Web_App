@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import localforage from "localforage";
+import {  useSelector } from "react-redux";
+
 
 import Navbar from "./component/Navbar";
 import Login from "./pages/Login";

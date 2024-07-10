@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserState, User, Movie, Comments } from "../../utils/UserInterface";
+import { UserState, User, Movie } from "../../utils/UserInterface";
 import localforage from "localforage";
 // import { useEffect } from "react";
 
